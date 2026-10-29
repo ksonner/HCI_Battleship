@@ -5,19 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship</title>
 
-    <link rel="stylesheet" href="{{ url_for('static',filename='battleship.css')}}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='battleship.css') }}">
 </head>
 
 <body>
+
     <h1>Battleship</h1>
 
-    <div id=""game-container">
-        
-        <div id="column-labels"></div>
+    <div class="board-container">
 
-        <div id=""board"> </div>
+        <!-- Top Labels -->
+        <div class="top-labels">
+            <div class="corner"></div>
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <div>D</div>
+            <div>E</div>
+            <div>F</div>
+            <div>G</div>
+            <div>H</div>
+            <div>I</div>
+            <div>J</div>
+        </div>
+
+        <!-- Game Grid -->
+        <div class="board">
+
+            {% for row in range(1, 11) %}
+
+                <div class="row-label">{{ row }}</div>
+
+                {% for col in range(10) %}
+
+                    <div class="cell"
+                         id="{{ ('ABCDEFGHIJ'[col]) }}{{ row }}">
+                    </div>
+
+                {% endfor %}
+
+            {% endfor %}
+
+        </div>
 
     </div>
-    
+
 </body>
 </html>
