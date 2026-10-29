@@ -20,7 +20,7 @@ def create_room_code():
 
 @app.route("/")
 def home():
-    return render_template('battleship.html')
+    return render_template('Battleship.html')
 
 @app.route("/new_game", methods=["POST"])
 def new_game():
@@ -30,7 +30,7 @@ def new_game():
         "board": [],
         "turn": 1
     }
-    return {"room_code": room_code}
+    return jsonify({"room_code": room_code})
 
 @app.route("/join_game", methods=["POST"])
 def join_game():
@@ -39,11 +39,8 @@ def join_game():
     room_code = data["room_code"]
     
     if room_code not in games:
-        return jsonify([
-            "sucess": False,
-            "message": "Game not found"
-        ])
-        
+        return jsonify({"success": False, "message": "Game not found"})
+
     return jsonify({
         "success": True,
         "message": "Joined game successfully"
