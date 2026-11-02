@@ -9,6 +9,7 @@ import string
 
 # ---------------
 # to run: main.py 
+# use http://127.0.0.1:5001
 # ---------------
 
 # creating the flask app
