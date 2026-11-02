@@ -7,6 +7,10 @@ from flask import Flask, render_template, request, jsonify
 import random
 import string 
 
+# ---------------
+# to run: main.py 
+# ---------------
+
 # creating the flask app
 app = Flask(__name__)
 
@@ -59,7 +63,7 @@ def new_game():
     
     # create a new game entry
     games[room_code] = {
-        "players": [],
+        "players": ["host"],
         "board": [],
         "turn": 1
     }
@@ -96,7 +100,7 @@ def join_game():
         "message": "Joined game successfully"
     })
     
-@app.route("/game_status/<room_code")
+@app.route("/game_status/<room_code>")
 def game_status(room_code):
     if room_code not in games:
         return jsonify({"ready": False})

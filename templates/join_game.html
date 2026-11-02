@@ -4,20 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='join_game.css') }}">
 </head>
+
 <body>
     <div class="container">
         <h1>Join Game</h1>
 
-        <form>
+        <form id="joinForm">
             <input
+                id="roomCode"
                 type="text"
                 placeholder="Enter game code"
                 aria-label="Game Code"
+                maxlength="6"
+                required
             >
-            <button type="submit">Submit</button>
+            <button id="joinBtn" type="submit">
+                Join Game 
+            </button>
+
+            <p id="message"></p>
+
         </form>
     </div>
+
+    <script>
+        document.getElementById("joinForm")
+            .addEventListener("submit", async (event) => {
+
+                event.preventDefault();
+
+                const roomCode = 
+                    document.getElementById("roomCode").value;
+
+                const response = await fetch("/join_game", {
+                    method: "POST", 
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        room_code: roomCode
+                    })
+                });
+
+                const data = await response.json();
+                
+                document.getElementById("message")
+                    .textContent = data.message;
+                
+                console.log("Join response:", data);
+
+                if (data.success) {
+                    console.log("Redirecting to Battleship...")
+                    window.location.href = "/battleship";
+                }
+            });
+    </script>
 </body>
 </html>

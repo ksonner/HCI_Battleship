@@ -16,9 +16,13 @@
         </div>
 
         <p>Share this code with the other player.</p>
+
+        <p id="status">Waiting for another player... </p>
     </div>
 
     <script>
+        let roomCode = "";
+
         async function createGame() {
             const response = await fetch('/new_game', {
                 method: 'POST'
@@ -26,9 +30,34 @@
 
             const data = await response.json();
 
+            roomCode = data.room_code;
+
             document.getElementById('roomCode').textContent =
-                data.room_code;
+                roomCode;
+
+            setInterval(checkGameStatus, 1000); 
         }
+
+    async function checkGameStatus() {
+        
+        if (roomCode === "") {
+            return;
+        }
+        const response = await fetch(`/game_status/${roomCode}`);    
+        
+
+        const data = await response.json();
+
+        console.log("Game status:", data);
+
+        if (data.ready) {
+            document.getElementById('status').textContent =
+                "Both players are connected! Starting game...";
+
+            window.location.href = "/battleship";
+        }
+    }
+     
 
         createGame();
     </script>
