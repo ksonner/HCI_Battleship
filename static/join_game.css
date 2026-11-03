@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -6,8 +7,12 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: white;
-    color: black;
+
+    /* CHANGED: Dark navy Battleship background */
+    background-color: #0b1d33;
+
+    /* CHANGED: White text */
+    color: white;
 
     display: flex;
     justify-content: center;
@@ -22,6 +27,9 @@ body {
 
 h1 {
     margin-bottom: 20px;
+
+    /* NEW: Make the heading stand out */
+    color: #ffffff;
 }
 
 form {
@@ -31,18 +39,62 @@ form {
 
 input {
     padding: 10px;
-    border: 1px solid black;
+
+    /* CHANGED: Ocean blue input border */
+    border: 1px solid #3189b5;
+
     font-size: 16px;
+
+    /* NEW: Dark blue input background */
+    background-color: #173451;
+
+    /* NEW: White text when entering room code */
+    color: white;
+
+    /* NEW: Rounded input corners */
+    border-radius: 6px;
+}
+
+/* NEW: Make placeholder text easier to read */
+input::placeholder {
+    color: #b8d9eb;
+}
+
+/* NEW: Highlight the input when selected */
+input:focus-visible {
+    outline: 3px solid #ffcc00;
+    outline-offset: 2px;
 }
 
 button {
     padding: 10px 20px;
-    border: 1px solid black;
-    background-color: black;
+
+    /* CHANGED: Ocean blue button border */
+    border: 1px solid #3189b5;
+
+    /* CHANGED: Ocean blue button */
+    background-color: #3189b5;
+
     color: white;
     cursor: pointer;
+
+    /* NEW: Rounded button corners */
+    border-radius: 6px;
+
+    /* NEW: Smooth hover effect */
+    transition: background-color 0.2s ease;
 }
 
 button:hover {
-    background-color: #333;
+    /* CHANGED: Brighter blue when hovering */
+    background-color: #65c7ed;
+
+    /* NEW: Dark text on hover */
+    color: #0b1d33;
+}
+
+/* NEW: Yellow outline for keyboard accessibility */
+button:focus-visible {
+    outline: 3px solid #ffcc00;
+    outline-offset: 3px;
 }

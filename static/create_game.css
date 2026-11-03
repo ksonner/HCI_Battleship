@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -6,8 +7,12 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: white;
-    color: black;
+
+    /* CHANGED: Dark navy Battleship background */
+    background-color: #0b1d33;
+
+    /* CHANGED: White text for better contrast */
+    color: white;
 
     display: flex;
     justify-content: center;
@@ -23,6 +28,9 @@ body {
 h1 {
     margin-bottom: 30px;
     font-size: 3rem;
+
+    /* NEW: White heading */
+    color: #ffffff;
 }
 
 .code-box {
@@ -30,16 +38,31 @@ h1 {
     margin: 0 auto 20px auto;
     padding: 20px;
 
-    border: 2px solid black;
-    border-radius: 5px;
+    /* CHANGED: Ocean blue border around room code */
+    border: 2px solid #3189b5;
+
+    /* CHANGED: More rounded corners */
+    border-radius: 10px;
 
     font-size: 2rem;
     font-weight: bold;
     letter-spacing: 5px;
 
-    background-color: #f5f5f5;
+    /* CHANGED: Dark blue room code box */
+    background-color: #173451;
+
+    /* NEW: Make the room code easier to read */
+    color: #ffffff;
 }
 
 p {
     font-size: 1rem;
+
+    /* NEW: Light blue instructions */
+    color: #b8d9eb;
+}
+
+/* NEW: Add spacing between instruction lines */
+p + p {
+    margin-top: 8px;
 }
