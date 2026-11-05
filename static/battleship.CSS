@@ -1,16 +1,31 @@
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f5f5f5;
+
+    /* CHANGED: Dark navy background for Battleship theme */
+    background-color: #0b1d33;
+
+    /* NEW: Make text white so it is easier to read */
+    color: white;
 }
 
 h1 {
     margin-top: 20px;
+
+    /* NEW: Make the game title stand out */
+    font-size: 36px;
+    color: #ffffff;
 }
 
 .board-container {
     display: inline-block;
     margin-top: 30px;
+
+    /* NEW: Add a panel around the game board */
+    background-color: #173451;
+    padding: 20px;
+    border-radius: 12px;
 }
 
 .top-labels {
@@ -38,12 +53,29 @@ h1 {
 .cell {
     width: 50px;
     height: 50px;
-    border: 1px solid black;
-    background-color: #7ec8e3;
+
+    /* CHANGED: Softer grid borders */
+    border: 1px solid #244b68;
+
+    /* CHANGED: Ocean blue board squares */
+    background-color: #3189b5;
+
+    /* NEW: Smooth color changes when hovering */
+    transition: background-color 0.2s ease;
 }
 
 .cell:hover {
-    background-color: #5ba7c4;
+    /* CHANGED: Brighter blue when hovering over a square */
+    background-color: #65c7ed;
+
+    /* NEW: Show pointer when hovering over a square */
+    cursor: pointer;
+}
+
+/* NEW: Highlight a square when it receives keyboard focus */
+.cell:focus-visible {
+    outline: 3px solid #ffcc00;
+    outline-offset: -3px;
 }
 
 .corner {

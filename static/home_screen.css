@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -6,8 +7,8 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: white;
-    color: black;
+    background-color: #0b1d33;
+    color: white;
 
     display: flex;
     justify-content: center;
@@ -16,34 +17,76 @@ body {
     height: 100vh;
 }
 
+/* CHANGED: Center the title and buttons vertically */
 .container {
     text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    /* NEW: Add space inside the container */
+    padding: 30px;
 }
 
 h1 {
     font-size: 3rem;
     margin-bottom: 30px;
+    color: #ffffff;
+
+    /* NEW: Keep the heading centered */
+    text-align: center;
 }
 
+/* CHANGED: Center buttons underneath the title */
 .button-group {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 15px;
+
+    /* NEW: Make the button group centered */
+    width: 100%;
 }
 
 button {
     width: 200px;
     padding: 12px;
-
     font-size: 16px;
-
-    background-color: black;
+    background-color: #3189b5;
     color: white;
-    border: 1px solid black;
-
+    border: 1px solid #3189b5;
     cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
 }
 
 button:hover {
-    background-color: #333;
+    background-color: #65c7ed;
+    color: #0b1d33;
+}
+
+/* NEW: Yellow outline for keyboard accessibility */
+button:focus-visible {
+    outline: 3px solid #ffcc00;
+    outline-offset: 3px;
+}
+
+
+/* CHANGED: Stack the title and buttons vertically */
+body {
+    flex-direction: column;
+}
+
+/* NEW: Center the title above the buttons */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* NEW: Keep the button group centered */
+.button-group {
+    align-items: center;
+    justify-content: center;
 }
