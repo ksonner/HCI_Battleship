@@ -42,6 +42,7 @@ h1 {
 .board {
     display: grid;
     grid-template-columns: 50px repeat(10, 50px);
+    border-right: 2px solid #244b68;
 }
 
 .row-label {
@@ -51,11 +52,9 @@ h1 {
 }
 
 .cell {
-    width: 50px;
-    height: 50px;
-
     /* CHANGED: Softer grid borders */
-    border: 1px solid #244b68;
+    border-left: 2px solid #244b68;
+    border-top: 2px solid #244b68;
 
     /* CHANGED: Ocean blue board squares */
     background-color: #3189b5;
@@ -81,4 +80,44 @@ h1 {
 .corner {
     width: 50px;
     height: 50px;
+}
+
+#A10 {
+  border-bottom: 2px solid #244b68;
+}
+
+#B10 {
+  border-bottom: 2px solid #244b68;
+}
+
+#C10 {
+  border-bottom: 2px solid #244b68;
+}
+
+#D10 {
+  border-bottom: 2px solid #244b68;
+}
+
+#E10 {
+  border-bottom: 2px solid #244b68;
+}
+
+#F10 {
+  border-bottom: 2px solid #244b68;
+}
+
+#G10 {
+  border-bottom: 2px solid #244b68;
+}
+
+#H10 {
+  border-bottom: 2px solid #244b68;
+}
+
+#I10 {
+  border-bottom: 2px solid #244b68;
+}
+
+#J10 {
+  border-bottom: 2px solid #244b68;
 }
