@@ -65,10 +65,18 @@ def new_game():
     # create a new game entry
     games[room_code] = {
         "players": ["host"],
-        "board": [],
+        
+        # ship location
+        "host_ships": [],
+        "guest_ships": [],
+        
+        # shots fired
+        "host_shots": [],
+        "guest_shots": [],
+        
         "turn": 1
     }
-    return jsonify({"room_code": room_code})
+    return jsonify({"room_code": room_code, "role": "host"})
 
 # allows a player to join an existing game room
 @app.route("/join_game", methods=["POST"])
@@ -99,6 +107,32 @@ def join_game():
     return jsonify({
         "success": True,
         "message": "Joined game successfully"
+    })
+    
+@app.route("/save_ships", methods=["POST"])
+def save_ships():
+    
+    data = request.json
+    
+    room_code = data["room_code"]    
+    player = data["player"]
+    ships = data["ships"]
+    
+    if room_code not in games:
+        return jsonify({
+            "success": False,
+            "message": "Game not found"
+        })
+        
+    if player == "host":
+        games[room_code]["host_ships"] = ships
+        
+    elif player == "guest":
+        games[room_code]["guest_ships"] = ships
+        
+    return jsonify({
+        "success": True,
+        "message": "Ships saved successfully"
     })
     
 @app.route("/game_status/<room_code>")
