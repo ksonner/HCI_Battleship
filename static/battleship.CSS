@@ -85,3 +85,209 @@ h1 {
 [id$='10'] {
     border-bottom: 2px solid #244b68;
 }
+
+/* Milestone 2: Allow ships to be positioned inside grid cells */
+.cell {
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Milestone 2: Create the main ship container */
+.ship {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+    filter: drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.6));
+}
+
+/* Milestone 2: Create a pointed metallic hull */
+.ship-hull {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+        to bottom,
+        #9daeb9 0%,
+        #526473 25%,
+        #293c4b 55%,
+        #172936 100%
+    );
+
+    clip-path: polygon(
+        0% 18%,
+        8% 5%,
+        88% 5%,
+        100% 50%,
+        88% 95%,
+        8% 95%,
+        0% 82%
+    );
+
+    border-radius: 8px;
+}
+
+/* Milestone 2: Create a raised deck */
+.ship-deck {
+    position: absolute;
+    width: 48%;
+    height: 42%;
+    left: 25%;
+    top: 29%;
+
+    background: linear-gradient(
+        to bottom,
+        #c4ced5,
+        #718391,
+        #435565
+    );
+
+    border: 1px solid #d8e2e8;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Milestone 2: Create the command bridge */
+.ship-bridge {
+    position: absolute;
+    width: 17%;
+    height: 55%;
+    left: 40%;
+    top: 22%;
+
+    background: linear-gradient(
+        135deg,
+        #e1e7ec,
+        #7b909f 50%,
+        #304452
+    );
+
+    border: 1px solid #dce5eb;
+    border-radius: 4px;
+    box-shadow: 1px 2px 3px #14232e;
+}
+
+/* Milestone 2: Create circular gun turrets */
+.ship-turret {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+
+    background: radial-gradient(
+        circle at 35% 30%,
+        #c6d0d7,
+        #657988 55%,
+        #243745
+    );
+
+    border: 1px solid #d4dce2;
+    border-radius: 50%;
+    box-sizing: border-box;
+    top: 9px;
+}
+
+/* Milestone 2: Add gun barrels */
+.ship-turret::after {
+    content: "";
+    position: absolute;
+    width: 13px;
+    height: 4px;
+    background-color: #b6c5cf;
+    border: 1px solid #263b4b;
+    border-radius: 2px;
+    left: 11px;
+    top: 5px;
+}
+
+/* Milestone 2: Position the front turret */
+.front-turret {
+    left: 73%;
+}
+
+/* Milestone 2: Position the rear turret */
+.rear-turret {
+    left: 12%;
+}
+
+/* Milestone 2: Add deck details */
+.ship-detail {
+    position: absolute;
+    left: 32%;
+    top: 13%;
+    width: 28%;
+    height: 3px;
+    background-color: #d2dce3;
+    border-radius: 3px;
+    opacity: 0.75;
+}
+
+/* Milestone 2: Create an aircraft carrier runway */
+.ship.carrier .ship-deck {
+    width: 60%;
+    height: 68%;
+    left: 22%;
+    top: 16%;
+    background: #344957;
+    border: 1px solid #a5b5c0;
+}
+
+/* Milestone 2: Add runway markings */
+.ship.carrier .ship-deck::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    top: 50%;
+    width: 84%;
+    border-top: 2px dashed #e6e9e9;
+}
+
+/* Milestone 2: Adjust the carrier command bridge */
+.ship.carrier .ship-bridge {
+    width: 12%;
+    left: 13%;
+    top: 6%;
+    height: 45%;
+}
+
+/* Milestone 2: Hide carrier gun turrets */
+.ship.carrier .ship-turret {
+    display: none;
+}
+
+/* Milestone 2: Create a streamlined submarine deck */
+.ship.submarine .ship-deck {
+    width: 35%;
+    left: 32%;
+    height: 32%;
+    top: 34%;
+}
+
+/* Milestone 2: Add the submarine tower */
+.ship.submarine .ship-bridge {
+    width: 13%;
+    left: 43%;
+    height: 48%;
+    top: 26%;
+}
+
+/* Milestone 2: Hide submarine gun turrets */
+.ship.submarine .ship-turret {
+    display: none;
+}
+
+/* Milestone 2: Adjust the destroyer deck */
+.ship.destroyer .ship-deck {
+    width: 38%;
+    left: 30%;
+}
+
+/* Milestone 2: Adjust the destroyer bridge */
+.ship.destroyer .ship-bridge {
+    width: 20%;
+    left: 40%;
+}
+
+/* Milestone 2: Hide the destroyer's rear turret */
+.ship.destroyer .rear-turret {
+    display: none;
+}
