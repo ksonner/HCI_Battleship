@@ -56,10 +56,10 @@
     <!-- Milestone 2: Create detailed ships on the Battleship board -->
     <script>
 
+        let selectedShip = null;
+
         // Milestone 2: Create a ship using its starting cell, length, and direction
         function createShip(startCell, length, direction, shipType) {
-
-            let selectedShip = null;
 
             document.addEventListener("click", function(event){
                 const ship = event.target.closest(".ship");
@@ -73,7 +73,7 @@
                 selectedShip.classList.add("selected");
             });
             // using r to rotate ships 
-            document.addEventListener("keydown", function(event)) {
+            document.addEventListener("keydown", function(event) {
                 if (!selectedShip) {
                     return;
                 }
@@ -86,9 +86,9 @@
                     selectedShip.style.transform = "rotate(90deg)";
                 } else {
                     selectedShip.dataset.direction = "horizontal";
-                    selectedShip.style.transform = "";
+                    selectedShip.style.transform = ""rotate(0deg)";
                 }
-            }
+            });
 
             // Milestone 2: Find the starting cell
             const cell = document.getElementById(startCell);
@@ -106,7 +106,7 @@
             ship.dataset.shipType = shipType;
             ship.dataset.startCell = startCell;
 
-            ships.push(ships);
+            ships.push(ship);
 
             // Milestone 2: Set the ship size based on its length
             const shipLength = length * 50 - 8;
@@ -183,14 +183,14 @@
 
     document
     .getElementById("ready-button")
-    .getEventListener("click", function(){
+    .addEventListener("click", function(){
         fetch("/save_ships",{
             method: "POST",
-            header:{
-                "content-Type":"application/json"
+            headers:{
+                "Content-Type":"application/json"
             },
             body: JSON.stringify({
-                room_code: localStorage.getItem("room_code"),
+            room_code: localStorage.getItem("roomCode"),
             player: localStorage.getItem("playerRole"),
             ships: collectShips()
             })
