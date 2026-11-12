@@ -181,6 +181,27 @@
         return shipData;
     }
 
+    document
+    .getElementById("ready-button")
+    .getEventListener("click", function(){
+        fetch("/save_ships",{
+            method: "POST",
+            header:{
+                "content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                room_code: localStorage.getItem("room_code"),
+            player: localStorage.getItem("playerRole"),
+            ships: collectShips()
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        });
+    });
+
+
     </script>
 
     <button id="ready-button">

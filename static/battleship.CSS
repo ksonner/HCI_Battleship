@@ -291,3 +291,23 @@ h1 {
 .ship.destroyer .rear-turret {
     display: none;
 }
+
+.selected{
+    outline: 4px solid yellow;
+    outline-offset: 3px;
+}
+
+#ready-button {
+    margin-top: 25px;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: #1e90ff;
+    color: white;
+    cursor: pointer;
+}
+
+#ready-button:hover {
+    background-color: #65c7ed;
+}
