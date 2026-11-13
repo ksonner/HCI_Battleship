@@ -50,45 +50,23 @@
             {% endfor %}
 
         </div>
-
+            <div class="button-container">
+                <button id="ready-button">
+                    Ready
+                </button>
+            </div>
     </div>
 
     <!-- Milestone 2: Create detailed ships on the Battleship board -->
     <script>
 
         let selectedShip = null;
+        let draggedShip = null;
+
+        const ships = [];
 
         // Milestone 2: Create a ship using its starting cell, length, and direction
         function createShip(startCell, length, direction, shipType) {
-
-            document.addEventListener("click", function(event){
-                const ship = event.target.closest(".ship");
-                if (!ship) {
-                    return;
-                }
-                if(selectedShip) {
-                    selectedShip.classList.remove("selected");
-                }
-                selectedShip = ship;
-                selectedShip.classList.add("selected");
-            });
-            // using r to rotate ships 
-            document.addEventListener("keydown", function(event) {
-                if (!selectedShip) {
-                    return;
-                }
-                if (event.key.toLowerCase() !== "r") {
-                    return;
-                }
-                if (selectedShip.dataset.direction === "horizontal") {
-                    selectedShip.dataset.direction = "vertical";
-                    selectedShip.style.transformOrigin = "top left";
-                    selectedShip.style.transform = "rotate(90deg)";
-                } else {
-                    selectedShip.dataset.direction = "horizontal";
-                    selectedShip.style.transform = ""rotate(0deg)";
-                }
-            });
 
             // Milestone 2: Find the starting cell
             const cell = document.getElementById(startCell);
@@ -154,18 +132,69 @@
                 ship.style.transform = "rotate(90deg)";
             }
 
+            ship.draggable = true;
+            ship.addEventListener("dragstart", function(event) {
+                draggedShip = ship;
+            });
+
             // Milestone 2: Add the completed ship to the board
             cell.appendChild(ship);
         }
 
         // Milestone 2: starting position for ships
-        const ships = [];
         createShip("A1", 5, "horizontal", "carrier");
         createShip("G2", 4, "vertical", "battleship");
         createShip("B5", 3, "horizontal", "cruiser");
         createShip("F8", 3, "horizontal", "submarine");
         createShip("J7", 2, "vertical", "destroyer");
 
+        document.addEventListener("click", function(event){
+            const ship = event.target.closest(".ship");
+            if (!ship) {
+                return;
+            }
+            if(selectedShip) {
+                selectedShip.classList.remove("selected");
+            }
+            selectedShip = ship;
+            selectedShip.classList.add("selected");
+        });
+
+        // using r to rotate ships 
+        document.addEventListener("keydown", function(event) {
+            if (!selectedShip) {
+                return;
+            }
+            if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+                return;
+            }
+            if (selectedShip.dataset.direction === "horizontal") {
+                selectedShip.dataset.direction = "vertical";
+                selectedShip.style.transformOrigin = "top left";
+                selectedShip.style.transform = "rotate(90deg)";
+            } else {
+                selectedShip.dataset.direction = "horizontal";
+                selectedShip.style.transform = "rotate(0deg)";
+            }
+        });
+
+        document.querySelectorAll(".cell").forEach(cell => {
+            cell.addEventListener("dragover", function(event) {
+                event.preventDefault();
+            });
+
+            cell.addEventListener("drop", function(event) {
+                event.preventDefault();
+                if (!draggedShip) {
+                    return;
+                }
+                cell.appendChild(draggedShip);
+                draggedShip.dataset.startCell = cell.id;
+                draggedShip = null;
+            });
+        });
+
+    
 
         // saves ship location after submission 
         function collectShips(){
@@ -203,10 +232,6 @@
 
 
     </script>
-
-    <button id="ready-button">
-        Ready
-    </button>
-
+        
 </body>
 </html>

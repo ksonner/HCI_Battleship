@@ -53,6 +53,7 @@ h1 {
 
 .cell {
     /* CHANGED: Softer grid borders */
+    position: relative;
     border-left: 2px solid #244b68;
     border-top: 2px solid #244b68;
 
@@ -95,9 +96,14 @@ h1 {
 /* Milestone 2: Create the main ship container */
 .ship {
     position: absolute;
-    z-index: 5;
-    pointer-events: none;
+    cursor: grab;
+    z-index: 100;
+    pointer-events: auto;
     filter: drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.6));
+}
+
+.ship:active{
+    cursor: grabbing;
 }
 
 /* Milestone 2: Create a pointed metallic hull */
@@ -295,6 +301,11 @@ h1 {
 .selected{
     outline: 4px solid yellow;
     outline-offset: 3px;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
 }
 
 #ready-button {
