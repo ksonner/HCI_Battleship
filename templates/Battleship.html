@@ -65,6 +65,46 @@
 
         const ships = [];
 
+        function clearHighlights(){
+            document
+                .querySelectorAll(".valid-drop, .invalid-drop")
+                .forEach(cell =>{
+                    cell.classList.remove(
+                        "valid-drop", 
+                        "invalid-drop"
+                    );
+            });
+        }
+        function getCoveredCells(startCellId,length, direction){
+            const letters = "ABCDEFGHIJ";
+            const startCol =
+                letters.indexOf(startCellId[0]);
+            const startRow =
+            parseInt(startCellId.substring(1));
+            const cells = [];
+            for (let i = 0; i < length; i++){
+                let col = startCol;
+                let row = startRow;
+                if (direction === "horizontal"){
+                    col += i;
+                } else {
+                    row += i;
+                }
+                if (
+                    col < 0 ||
+                    col > 9 ||
+                    row < 1 ||
+                    row > 10
+                ){
+                    return null;
+                }
+                cells.push(
+                    letters[col] + row
+                );
+            }
+            return cells;
+        }
+
         // Milestone 2: Create a ship using its starting cell, length, and direction
         function createShip(startCell, length, direction, shipType) {
 
@@ -121,15 +161,11 @@
             detail.classList.add("ship-detail");
             ship.appendChild(detail);
 
-            // Milestone 2: Position horizontal and vertical ships
-            if (direction === "horizontal") {
-                ship.style.left = "4px";
-                ship.style.top = "8px";
+            ship.style.transformOrigin = "center center";
+            if (direction === "vertical") {
+                ship.style.transform = "translate(-50%, -50%) rotate(90deg)";
             } else {
-                ship.style.left = "calc(50% + 17px)";
-                ship.style.top = "4px";
-                ship.style.transformOrigin = "top left";
-                ship.style.transform = "rotate(90deg)";
+                ship.style.transform = "translate(-50%, -50%);"
             }
 
             ship.draggable = true;
@@ -165,34 +201,64 @@
             if (!selectedShip) {
                 return;
             }
-            if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+            if (event.key !== "ArrowLeft" &&
+                event.key !== "ArrowRight") {
                 return;
             }
             if (selectedShip.dataset.direction === "horizontal") {
                 selectedShip.dataset.direction = "vertical";
-                selectedShip.style.transformOrigin = "top left";
-                selectedShip.style.transform = "rotate(90deg)";
+                selectedShip.style.transform = "translate(-50%, -50%) rotate(90deg)";
             } else {
                 selectedShip.dataset.direction = "horizontal";
-                selectedShip.style.transform = "rotate(0deg)";
+                selectedShip.style.transform = "translate(-50%, -50%)";
             }
         });
 
         document.querySelectorAll(".cell").forEach(cell => {
+
             cell.addEventListener("dragover", function(event) {
                 event.preventDefault();
-            });
-
-            cell.addEventListener("drop", function(event) {
-                event.preventDefault();
-                if (!draggedShip) {
+        
+                if(!draggedShip){
                     return;
                 }
-                cell.appendChild(draggedShip);
-                draggedShip.dataset.startCell = cell.id;
-                draggedShip = null;
+                clearHighlights();
+
+                const cells= 
+                    getCoveredCells(
+                        cell.id,
+                        parseInt(draggedShip.dataset.length),
+                        draggedShip.dataset.direction
+                );
+
+            if (cells === null) {
+                cell.classList.add("invalid-drop");
+                return;
+            }
+            
+            cells.forEach(id => {
+                document
+                .getElementById(id)
+                .classList.add("valid-drop");
             });
+        
         });
+        cell.addEventListener("dragleave", function(event) {
+            clearHighlights();
+        });
+
+        cell.addEventListener("drop", function(event) {
+            event.preventDefault();
+
+            if(!draggedShip){
+                return;
+            }
+            cell.appendChild(draggedShip);
+            draggedShip.dataset.startCell = cell.id;
+            clearHighlights();
+            draggedShip = null;
+        });
+    });     
 
     
 

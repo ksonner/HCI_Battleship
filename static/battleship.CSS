@@ -78,6 +78,14 @@ h1 {
     outline-offset: -3px;
 }
 
+.cell.valid-drop{
+    background-color: #57c657;
+}
+
+.cell.invalid-drop{
+    background-color: #e25b5b;
+}
+
 .corner {
     width: 50px;
     height: 50px;
@@ -93,11 +101,18 @@ h1 {
     box-sizing: border-box;
 }
 
+.cell.drag-target{
+    background-color: #65c7ed;
+}
+
 /* Milestone 2: Create the main ship container */
 .ship {
     position: absolute;
     cursor: grab;
     z-index: 100;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     pointer-events: auto;
     filter: drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.6));
 }
@@ -322,3 +337,5 @@ h1 {
 #ready-button:hover {
     background-color: #65c7ed;
 }
+
+
