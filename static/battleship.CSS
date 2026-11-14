@@ -71,6 +71,14 @@ h1 {
     cursor: pointer;
 }
 
+.occupied {
+    background-color: #244b68;
+}
+
+.occupied:hover {
+    background-color: rgb(55, 110, 110);
+}
+
 /* NEW: Highlight a square when it receives keyboard focus */
 .cell:focus-visible {
     outline: 3px solid #ffcc00;
@@ -309,5 +317,20 @@ h1 {
 }
 
 #ready-button:hover {
+    background-color: #65c7ed;
+}
+
+#randomize-button {
+    margin-top: 25px;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: #1e90ff;
+    color: white;
+    cursor: pointer;
+}
+
+#randomize-button:hover {
     background-color: #65c7ed;
 }

@@ -53,15 +53,27 @@
 
     </div>
 
+    <button id="ready-button">
+        Ready
+    </button>
+
+    <div>
+        <button id="randomize-button">
+            Randomize
+        </button>
+    </div>
+
     <!-- Milestone 2: Create detailed ships on the Battleship board -->
     <script>
 
-        let selectedShip = null;
+        
 
         // Milestone 2: Create a ship using its starting cell, length, and direction
         function createShip(startCell, length, direction, shipType) {
-
-            document.addEventListener("click", function(event){
+            gameStart = false;
+            /* Don't put event listeners inside a function that gets called multiple times because it
+               adds a new event listener every time the function is called
+            document.addEventListener("click", function(event) {
                 const ship = event.target.closest(".ship");
                 if (!ship) {
                     return;
@@ -86,9 +98,10 @@
                     selectedShip.style.transform = "rotate(90deg)";
                 } else {
                     selectedShip.dataset.direction = "horizontal";
-                    selectedShip.style.transform = ""rotate(0deg)";
+                    selectedShip.style.transform = "rotate(0deg)";
                 }
             });
+            */
 
             // Milestone 2: Find the starting cell
             const cell = document.getElementById(startCell);
@@ -99,6 +112,7 @@
 
             // Milestone 2: Create the main ship container
             const ship = document.createElement("div");
+            ship.id = shipType;
             ship.classList.add("ship", direction, shipType);
 
             ship.dataset.direction = direction;
@@ -158,16 +172,212 @@
             cell.appendChild(ship);
         }
 
+        letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+
+        function initShip(length, random, x, y, rotation) {
+            collision = false;
+            
+            do {
+                collision = false;
+                if (random) {
+                    x = Math.floor(Math.random() * 10 + 1);
+                    y = Math.floor(Math.random() * 10 + 1);
+                    r = Math.floor(Math.random() * 2);
+                    if (r === 0 && (x + length) < 12) {
+                        rotation = "horizontal";
+                    } else if (r === 1 && (y + length) < 12) {
+                        rotation = "vertical";
+                    } else {
+                        collision = true;
+                    };
+                } else {
+                    if ((rotation === "horizontal" && (x + length) > 11) || (rotation === "vertical" && (y + length) > 11)) {
+                        collision = true;
+                    };
+                };
+                
+                position = letters[x - 1].concat(y.toString());
+                if (!collision) {
+                    cells = [];
+                    startCells = [];
+                    cells.push(position);
+                    startCells.push([position, position]);
+                    for (let i = 1; i < length; i++) {
+                        var x1;
+                        var y1;
+                        if (rotation === "horizontal") {
+                            x1 = i + x;
+                            y1 = y
+                        } else {
+                            x1 = x;
+                            y1 = i + y;
+                        };
+                        pos = letters[x1 - 1].concat(y1.toString());
+                        cells.push(pos);
+                        startCells.push([position, pos]);
+                    };
+                    if (cells.some(v => occupiedCells.indexOf(v) >= 0)) {
+                        collision = true;
+                    } else {
+                        occupiedCells = occupiedCells.concat(cells);
+                        shipStartCells = shipStartCells.concat(startCells);
+                        return [position, rotation];
+                    }
+                };
+            } while (collision && random);
+            
+            if (collision) {
+                return false;
+            }
+            
+        };
+
         // Milestone 2: starting position for ships
-        const ships = [];
-        createShip("A1", 5, "horizontal", "carrier");
-        createShip("G2", 4, "vertical", "battleship");
-        createShip("B5", 3, "horizontal", "cruiser");
-        createShip("F8", 3, "horizontal", "submarine");
-        createShip("J7", 2, "vertical", "destroyer");
+        ships = [];
+        occupiedCells = [];
+        
+        // This contains pairs of cells where the first cell is a cell
+        // in a ship and the second is the starting cell of that ship
+        shipStartCells = [];
+        function randomizeShips(first = false) {
+            cells = document.getElementsByClassName("cell");
+            //cellIDs = [];
+            if (!first) {
+                shipNodes = [];            
+                shipNodes.push(document.getElementById("carrier"));
+                shipNodes.push(document.getElementById("battleship"));
+                shipNodes.push(document.getElementById("cruiser"));
+                shipNodes.push(document.getElementById("submarine"));
+                shipNodes.push(document.getElementById("destroyer"));
+                for (const element of shipNodes) {
+                    if (element.parentNode) {
+                        element.parentNode.removeChild(element);
+                    };
+                }
+            };
+            ships = [];
+            occupiedCells = [];
+            shipStartCells = [];
+            carrier = initShip(5, true);
+            createShip(carrier[0], 5, carrier[1], "carrier");
+            battleship = initShip(4, true);
+            createShip(battleship[0], 4, battleship[1], "battleship");
+            cruiser = initShip(3, true);
+            createShip(cruiser[0], 3, cruiser[1], "cruiser");
+            submarine = initShip(3, true);
+            createShip(submarine[0], 3, submarine[1], "submarine");
+            destroyer = initShip(2, true);
+            createShip(destroyer[0], 2, destroyer[1], "destroyer");
+        }
 
+        randomizeShips(true);
 
-        // saves ship location after submission 
+        function replaceShip(shipRot = selectedShip.dataset.direction) {
+            shipType = selectedShip.dataset.shipType;
+            node = document.getElementById(shipType);
+            oldCell = selectedShip.dataset.startCell;
+            shipX = letters.indexOf(oldCell[0]) + 1;
+            shipY = parseInt(oldCell.slice(1));
+            newX = letters.indexOf(cell[0]) + 1;
+            newY = parseInt(cell.slice(1));
+            shipLength = parseInt(selectedShip.dataset.length);
+            oldOccupied = Array.from(occupiedCells);
+            oldStartCells = Array.from(shipStartCells);
+            
+            if (node.parentNode) {
+                node.parentNode.removeChild(node);
+            };
+
+            cellIndex = occupiedCells.indexOf(oldCell);
+
+            occupiedCells.splice(cellIndex, shipLength);
+            shipStartCells.splice(cellIndex, shipLength)
+
+            for (const ship in ships) {
+                if (ships[ship].dataset.startCell === oldCell) {
+                    ships.splice(ship, 1);
+                    break;
+                };
+            };
+
+            newShip = initShip(shipLength, false, newX, newY, shipRot);
+            if (newShip !== false) {
+                createShip(newShip[0], shipLength, newShip[1], shipType);
+                selectedShip = null;
+            } else {
+                occupiedCells = oldOccupied;
+                shipStartCells = oldStartCells;
+                createShip(oldCell, shipLength, selectedShip.dataset.direction, shipType);
+                for (const ship in ships) {
+                    if (ships[ship].dataset.startCell === oldCell) {
+                        selectedShip = ships[ship];
+                        break;
+                    };
+                };
+            };
+        };
+
+        cellList = document.getElementsByClassName("cell");
+        selectedShip = null;
+        for (const element of cellList) {
+            element.addEventListener("click", function(event) {
+                if (!gameStart) {
+                    cell = element.id;
+                    if (occupiedCells.includes(cell)) {
+                        var startCell;
+                        for (const pair in shipStartCells) {
+                            if (cell === shipStartCells[pair][1]) {
+                                startCell = shipStartCells[pair][0];
+                                if (selectedShip !== null) {
+                                    selectedShip.classList.remove("selected");
+                                    if (selectedShip.dataset.startCell === startCell) {
+                                        selectedShip = null;
+                                        break;
+                                    };
+                                    selectedShip = null;
+                                };
+                                for (const ship in ships) {
+                                    if (ships[ship].dataset.startCell === startCell) {
+                                        selectedShip = ships[ship];
+                                        break;
+                                    };
+                                };
+                                break;
+                            };
+                        };
+                    } else if (selectedShip !== null) {
+                        replaceShip();
+                    };
+
+                    if(selectedShip !== null) {
+                        selectedShip.classList.add("selected");
+                    };
+                };
+            });
+        }
+        
+        // using r to rotate ships 
+        document.addEventListener("keydown", function(event) {
+            if (!gameStart) {
+                if (!selectedShip) {
+                    return;
+                }
+                if (event.key.toLowerCase() !== "r") {
+                    return;
+                }
+                cell = selectedShip.dataset.startCell;
+                if (selectedShip.dataset.direction === "horizontal") {
+                    replaceShip("vertical");
+                } else {
+                    replaceShip("horizontal");
+                }
+                if(selectedShip !== null) {
+                    selectedShip.classList.add("selected");
+                };
+            };
+        });
+
+        // saves ship location after submission
         function collectShips(){
             const shipData = [];
             ships.forEach(ship => {
@@ -181,9 +391,18 @@
         return shipData;
     }
 
-    document
-    .getElementById("ready-button")
-    .addEventListener("click", function(){
+    document.getElementById("ready-button").addEventListener("click", function(){
+        randButton = document.getElementById("randomize-button");
+        if (randButton.parentNode) {
+            randButton.parentNode.removeChild(randButton);
+        };
+
+        if (selectedShip !== null) {
+            selectedShip.classList.remove("selected");
+            selectedShip = null;
+        };
+        gameStart = true;
+
         fetch("/save_ships",{
             method: "POST",
             headers:{
@@ -194,19 +413,22 @@
             player: localStorage.getItem("playerRole"),
             ships: collectShips()
             })
-        })
-        .then(response => response.json())
-        .then(data => {
+        }).then(response => response.json()).then(data => {
             alert(data.message);
         });
     });
 
 
-    </script>
+    document.getElementById("randomize-button").addEventListener("click", function(){
+        if (selectedShip !== null) {
+            selectedShip.classList.remove("selected");
+            selectedShip = null;
+        };
+        randomizeShips()
+    });
 
-    <button id="ready-button">
-        Ready
-    </button>
+
+    </script>
 
 </body>
 </html>
