@@ -251,13 +251,7 @@ def fire_shot():
         "hit": hit,
         "target": target
     })                
-                
-           
-    
-    return jsonify({
-        "success": True,
-        "target": target
-    })    
+                 
 
 
 # ---------------    
