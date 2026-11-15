@@ -60,7 +60,7 @@
         </div>
 
         <!-- OPPONENT'S BOARD -->
-        <div class="board-section">
+        <div class="board-section" id="opponent-board">
             <h2>OPPONENT</h2>
 
             <div class="board-container">
@@ -240,6 +240,36 @@
         })
         .catch(error => {
             console.error(error);
+        });
+
+        // clicking oppenent's board to send a shot
+        document    
+        .querySelectorAll(
+            "#opponent-board .cell"
+        )
+        .forEach(cell => {
+            cell.addEventListener('click', () => {
+
+                fetch("/fire_shot", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        room_code: localStorage.getItem("roomCode"),
+                        player: localStorage.getItem("playerRole"),
+                        target: cell.id
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.hit) {
+                        cell.style.backgroundColor = "red";
+                    } else {
+                        cell.style.backgroundColor = "white";
+                    }
+                });
+            });
         });
         
         </script>

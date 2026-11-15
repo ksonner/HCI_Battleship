@@ -207,6 +207,57 @@ def ready_status(room_code):
         "host_ready": game["host_ready"],
         "guest_ready": game["guest_ready"]
     })
+    
+# fire shot route    
+@app.route("/fire_shot", methods=["POST"])
+def fire_shot():
+    
+    data = request.json
+    
+    room_code = data["room_code"]
+    player = data["player"]
+    target = data["target"]
+    
+    print(f"{player} fired at {target}")
+    
+    hit = False
+    
+    if player == "host":
+        enemy_ships = games[room_code]["guest_ships"]
+    else: 
+        enemy_ships = games[room_code]["host_ships"]
+        
+    for ship in enemy_ships:
+        start = ship["startCell"]
+        length = int(ship["length"])
+        direction = ship["direction"]
+        
+        letters = "ABCDEFGHIJ"
+        
+        col = letters.index(start[0])       
+        row = int(start[1:])
+        
+        for i in range(length):
+            if direction == "horizontal":
+                current = letters[col + i] + str(row)
+            else:
+                current = letters[col] + str(row + i)
+                
+            if current == target.replace("opponent-", ""):
+                hit = True
+                
+    return jsonify({
+        "success": True,
+        "hit": hit,
+        "target": target
+    })                
+                
+           
+    
+    return jsonify({
+        "success": True,
+        "target": target
+    })    
 
 
 # ---------------    
