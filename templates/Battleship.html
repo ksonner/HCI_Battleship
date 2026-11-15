@@ -71,6 +71,8 @@
         // Milestone 2: Create a ship using its starting cell, length, and direction
         function createShip(startCell, length, direction, shipType) {
             gameStart = false;
+            roomCode = localStorage.getItem("roomCode");
+            playerRole = localStorage.getItem("playerRole");
             /* Don't put event listeners inside a function that gets called multiple times because it
                adds a new event listener every time the function is called
             document.addEventListener("click", function(event) {
@@ -391,6 +393,29 @@
         return shipData;
     }
 
+    var hostShips;
+    var guestShips;
+
+    async function checkGameStatus() {
+        if (roomCode === "") {
+            return;
+        }
+        const response = await fetch(`/game_start_status/${roomCode}`);    
+        
+        const data = await response.json();
+
+        console.log("Game status:", data);
+
+        if (data.ready) {
+            clearInterval(checking);
+            hostShips = data.host_ships;
+            guestShips = data.guest_ships;
+            console.log(hostShips);
+            console.log(guestShips);
+            return;
+        }
+    }
+
     document.getElementById("ready-button").addEventListener("click", function(){
         randButton = document.getElementById("randomize-button");
         if (randButton.parentNode) {
@@ -401,7 +426,10 @@
             selectedShip.classList.remove("selected");
             selectedShip = null;
         };
+
         gameStart = true;
+
+        console.log(collectShips());
 
         fetch("/save_ships",{
             method: "POST",
@@ -416,6 +444,8 @@
         }).then(response => response.json()).then(data => {
             alert(data.message);
         });
+
+        checking = setInterval(checkGameStatus, 1000);
     });
 
 

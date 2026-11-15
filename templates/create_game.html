@@ -38,25 +38,27 @@
             setInterval(checkGameStatus, 1000); 
         }
 
-    async function checkGameStatus() {
+        async function checkGameStatus() {
         
-        if (roomCode === "") {
-            return;
+            if (roomCode === "") {
+                return;
+            }
+            const response = await fetch(`/game_status/${roomCode}`);    
+            
+
+            const data = await response.json();
+
+            console.log("Game status:", data);
+
+            if (data.ready) {
+                localStorage.setItem("roomCode", roomCode);
+                localStorage.setItem("playerRole", "host");
+                document.getElementById('status').textContent =
+                    "Both players are connected! Starting game...";
+
+                window.location.href = "/battleship";
+            }
         }
-        const response = await fetch(`/game_status/${roomCode}`);    
-        
-
-        const data = await response.json();
-
-        console.log("Game status:", data);
-
-        if (data.ready) {
-            document.getElementById('status').textContent =
-                "Both players are connected! Starting game...";
-
-            window.location.href = "/battleship";
-        }
-    }
      
 
         createGame();

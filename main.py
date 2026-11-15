@@ -146,6 +146,20 @@ def game_status(room_code):
         "ready": player_count >= 2,
         "players": player_count
     })    
+
+@app.route("/game_start_status/<room_code>")
+def game_start_status(room_code):
+    if room_code not in games:
+        return jsonify({"ready": False})
+    
+    host_ships = len(games[room_code]["host_ships"])
+    guest_ships = len(games[room_code]["guest_ships"])
+    
+    return jsonify({
+        "ready": host_ships == 5 and guest_ships == 5,
+        "host_ships": games[room_code]["host_ships"],
+        "guest_ships": games[room_code]["guest_ships"]
+    })    
     
 # ---------------    
 # start flask app

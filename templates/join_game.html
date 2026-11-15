@@ -56,6 +56,8 @@
                 console.log("Join response:", data);
 
                 if (data.success) {
+                    localStorage.setItem("roomCode", roomCode)
+                    localStorage.setItem("playerRole", "guest")
                     console.log("Redirecting to Battleship...")
                     window.location.href = "/battleship";
                 }
