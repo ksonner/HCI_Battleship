@@ -10,6 +10,7 @@
       
 </head>
 
+        
 <body>
 
     <h1>Battleship</h1>
@@ -100,6 +101,148 @@
             </div>
         </div>
     </div>        
+
+    <script>
+        function createShip(startCell, length, direction, shipType) {
+
+            // Milestone 2: Find the starting cell
+            const cell = document.getElementById(startCell);
+
+            if (!cell) {
+                return;
+            }
+
+            // Milestone 2: Create the main ship container
+            const ship = document.createElement("div");
+            ship.classList.add("ship", direction, shipType);
+
+            ship.dataset.direction = direction;
+            ship.dataset.length = length;
+            ship.dataset.shipType = shipType;
+            ship.dataset.startCell = startCell;
+
+            
+
+            // Milestone 2: Set the ship size based on its length
+            const shipLength = length * 50 - 8;
+            ship.style.width = shipLength + "px";
+            ship.style.height = "34px";
+
+            // Milestone 2: Create the metallic ship hull
+            const hull = document.createElement("div");
+            hull.classList.add("ship-hull");
+            ship.appendChild(hull);
+
+            // Milestone 2: Create the raised deck
+            const deck = document.createElement("div");
+            deck.classList.add("ship-deck");
+            ship.appendChild(deck);
+
+            // Milestone 2: Create the command bridge
+            const bridge = document.createElement("div");
+            bridge.classList.add("ship-bridge");
+            ship.appendChild(bridge);
+
+            // Milestone 2: Create the front gun turret
+            const frontTurret = document.createElement("div");
+            frontTurret.classList.add("ship-turret", "front-turret");
+            ship.appendChild(frontTurret);
+
+            // Milestone 2: Create the rear gun turret
+            const rearTurret = document.createElement("div");
+            rearTurret.classList.add("ship-turret", "rear-turret");
+            ship.appendChild(rearTurret);
+
+            // Milestone 2: Add small details to the ship deck
+            const detail = document.createElement("div");
+            detail.classList.add("ship-detail");
+            ship.appendChild(detail);
+
+            ship.style.transformOrigin = "center center";
+            if (direction === "vertical") {
+                ship.style.transform = "translate(-50%, -50%) rotate(90deg)";
+            } else {
+                ship.style.transform = "translate(-50%, -50%);"
+            }
+
+    
+
+            // Milestone 2: Add the completed ship to the board
+            cell.appendChild(ship);
+        }
+
+        function drawShips(shipList) {
+        
+            shipList.forEach(ship => {
+        
+                const startCell =
+                    document.getElementById(ship.startCell);
+        
+                if (!startCell) {
+                    return;
+                }
+        
+                const shipDiv =
+                    document.createElement("div");
+        
+                shipDiv.classList.add("ship");
+        
+                shipDiv.style.position = "absolute";
+                shipDiv.style.backgroundColor = "gray";
+                shipDiv.style.border = "2px solid black";
+                shipDiv.style.zIndex = "10";
+        
+                if (ship.direction === "vertical") {
+        
+                    shipDiv.style.width = "40px";
+                    shipDiv.style.height =
+                        (50 * parseInt(ship.length)) + "px";
+        
+                } else {
+        
+                    shipDiv.style.width =
+                        (50 * parseInt(ship.length)) + "px";
+        
+                    shipDiv.style.height = "40px";
+                }
+        
+                startCell.appendChild(shipDiv);
+        
+            });
+        
+        }
+        
+        const roomCode =
+            localStorage.getItem("roomCode");
+        
+        const playerRole =
+            localStorage.getItem("playerRole");
+        
+        fetch(`/get_ships/${roomCode}/${playerRole}`)
+        .then(response => response.json())
+        .then(data => {
+        
+            if (!data.success) {
+                return;
+            }
+        
+            data.your_ships.forEach(ship => {
+
+                createShip(
+                    ship.startCell,
+                    parseInt(ship.length),
+                    ship.direction,
+                    ship.type
+                );
+            
+            });
+        
+        })
+        .catch(error => {
+            console.error(error);
+        });
+        
+        </script>
 
 </body>
 </html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship</title>
+
+    <link rel="stylesheet"
+      href="{{ url_for('static', filename='waiting.css') }}">
+      
+</head>
+
+        
+<body>
+
+<h1>Waiting For Opponent</h1>
+<p>
+    Waiting for the other player
+    to finish placing ships...
+</p>
+
+<script>
+
+    const room_code = 
+    localStorage.getItem("roomCode");
+
+    // check every second if the both players are ready
+    setInterval(() => {
+        fetch(
+            `/ready_status/${localStorage.getItem("roomCode")}`
+        )
+        .then(response => response.json())
+        .then(data => {
+            if (data.ready) {
+                alert("Both players are ready! Starting the game...");
+                window.location.href = "/game_play";
+            }
+        });
+    }, 1000);
+
+
+</script>
+</body>
+</head>

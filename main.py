@@ -52,6 +52,14 @@ def start_game():
 def battleship():
     return render_template('battleship.html')
 
+@app.route("/game_play")
+def game_play():
+    return render_template("game_play.html")
+
+@app.route("/waiting")
+def waiting():
+    return render_template("waiting.html")
+
 # ----------
 # API routes
 # ----------
@@ -69,6 +77,10 @@ def new_game():
         # ship location
         "host_ships": [],
         "guest_ships": [],
+        
+        # are both players ready
+        "host_ready": False,
+        "guest_ready": False,
         
         # shots fired
         "host_shots": [],
@@ -135,6 +147,23 @@ def save_ships():
         "message": "Ships saved successfully"
     })
     
+@app.route("/get_ships/<room_code>/<player>") 
+def get_ships(room_code, player):
+    if room_code not in games:
+        return jsonify({"success": False})
+    if player == "host":
+        return jsonify({
+            "success": True,
+            "your_ships": games[room_code]["host_ships"],
+            "opponent_ships": games[room_code]["guest_ships"]
+        })   
+    else:
+        return jsonify({
+            "success": True,
+            "your_ships": games[room_code]["guest_ships"],
+            "opponent_ships": games[room_code]["host_ships"]
+        })    
+    
 @app.route("/game_status/<room_code>")
 def game_status(room_code):
     if room_code not in games:
@@ -147,6 +176,39 @@ def game_status(room_code):
         "players": player_count
     })    
     
+@app.route("/player_ready", methods=["POST"])
+def player_Ready():
+    data = request.json
+    room_code = data["room_code"]
+    player = data["player"]
+    
+    print("READY BUTTON PRESSED")
+    print("player:", player)
+    print("Room:", room_code)
+    
+    if player == "host":
+        games[room_code]["host_ready"] = True
+    else:
+        games[room_code]["guest_ready"] = True
+    return jsonify({"success": True})
+
+@app.route("/ready_status/<room_code>")
+def ready_status(room_code):
+    if room_code not in games:
+        return jsonify({"ready": False})
+    
+    game = games[room_code]
+    
+    return jsonify ({
+        "ready":(
+            game["host_ready"] and
+            game["guest_ready"]
+        ),
+        "host_ready": game["host_ready"],
+        "guest_ready": game["guest_ready"]
+    })
+
+
 # ---------------    
 # start flask app
 # ---------------

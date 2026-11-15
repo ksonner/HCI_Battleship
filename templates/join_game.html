@@ -56,9 +56,27 @@
                 console.log("Join response:", data);
 
                 if (data.success) {
-                    console.log("Redirecting to Battleship...")
+                    localStorage.setItem(
+                        "roomCode",
+                        roomCode
+                    );
+                    localStorage.setItem(
+                        "playerRole",
+                        "guest"
+                    );
+                    console.log(
+                        "Room Code:",
+                        localStorage.getItem("roomCode"),
+                    );
+                    console.log(
+                        "Role:",
+                        localStorage.getItem("playerRole")
+                    );
+                    console.log("Redirecting to Battleship..."
+                    );
                     window.location.href = "/battleship";
                 }
+                
             });
     </script>
 </body>

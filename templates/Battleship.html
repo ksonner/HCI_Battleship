@@ -196,7 +196,7 @@
             selectedShip.classList.add("selected");
         });
 
-        // using r to rotate ships 
+        // using arrow keys to rotate ships 
         document.addEventListener("keydown", function(event) {
             if (!selectedShip) {
                 return;
@@ -292,11 +292,27 @@
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
+            if(data.success){
+                fetch("/player_ready", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        room_code: localStorage.getItem("roomCode"),
+                        player: localStorage.getItem("playerRole")
+                    })
+                })
+                .then(() => {
+                    window.location.href = "/waiting";
+                });
+                
+            } else {
+                alert(data.message);
+            }
         });
     });
-
-
+    
     </script>
         
 </body>

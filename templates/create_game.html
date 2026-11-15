@@ -32,6 +32,16 @@
 
             roomCode = data.room_code;
 
+            localStorage.setItem(
+                "roomCode",
+                roomCode
+            );
+
+            localStorage.setItem(
+                "playerRole",
+                "host"
+            );
+
             document.getElementById('roomCode').textContent =
                 roomCode;
 
