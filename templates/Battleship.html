@@ -388,7 +388,7 @@
             });
         }
         
-        // using r to rotate ships 
+        // using r or arrow keys to rotate ships 
         document.addEventListener("keydown", function(event) {
             if (!gameStart) {
                 if (!selectedShip) {
@@ -409,36 +409,6 @@
                 };
             };
         });
-
-        /*document.addEventListener("click", function(event){
-            const ship = event.target.closest(".ship");
-            if (!ship) {
-                return;
-            }
-            if(selectedShip) {
-                selectedShip.classList.remove("selected");
-            }
-            selectedShip = ship;
-            selectedShip.classList.add("selected");
-        });*/
-
-        // using arrow keys to rotate ships 
-        /*document.addEventListener("keydown", function(event) {
-            if (!selectedShip) {
-                return;
-            }
-            if (event.key !== "ArrowLeft" &&
-                event.key !== "ArrowRight") {
-                return;
-            }
-            if (selectedShip.dataset.direction === "horizontal") {
-                selectedShip.dataset.direction = "vertical";
-                selectedShip.style.transform = "translate(-50%, -50%) rotate(90deg)";
-            } else {
-                selectedShip.dataset.direction = "horizontal";
-                selectedShip.style.transform = "translate(-50%, -50%)";
-            }
-        });*/
 
         document.querySelectorAll(".cell").forEach(cell => {
 
@@ -473,42 +443,51 @@
                         draggedShip.dataset.direction
                 );
 
-            if (occupiedCells.includes(cell.id)) {
-                cell.classList.add("invalid-drop");
-                return;
-            }
-            
-            cells.forEach(id => {
-                document
-                .getElementById(id)
-                .classList.add("valid-drop");
-            });
+
+                
+                //if (occupiedCells.includes(cell.id)) {
+                //    cell.classList.add("invalid-drop");
+                //    return;
+                //}
+
+                if (cells === null) {
+                    return;
+                }
+                
+                cells.forEach(id => {
+                    curCell = document.getElementById(id);
+                    if (occupiedCells.includes(curCell.id)) {
+                        curCell.classList.add("invalid-drop");
+                    } else {
+                        curCell.classList.add("valid-drop")
+                    }
+                });
         
-        });
-        cell.addEventListener("dragleave", function(event) {
-            clearHighlights();
-        });
+            });
+            cell.addEventListener("dragleave", function(event) {
+                clearHighlights();
+            });
 
-        cell.addEventListener("drop", function(event) {
-            event.preventDefault();
+            cell.addEventListener("drop", function(event) {
+                event.preventDefault();
 
-            if(!draggedShip){
-                return;
-            }
-            //cell.appendChild(draggedShip);
-            replaceShip(cell.id);
-            clearHighlights();
-            draggedShip = null;
-            selectedShip = null;
-            for (const ship in ships) {
-                if (ships[ship].dataset.startCell === cell.id) {
-                    selectedShip = ships[ship];
-                    selectedShip.classList.add("selected");
-                    break;
+                if(!draggedShip){
+                    return;
+                }
+                //cell.appendChild(draggedShip);
+                replaceShip(cell.id);
+                clearHighlights();
+                draggedShip = null;
+                selectedShip = null;
+                for (const ship in ships) {
+                    if (ships[ship].dataset.startCell === cell.id) {
+                        selectedShip = ships[ship];
+                        selectedShip.classList.add("selected");
+                        break;
+                    };
                 };
-            };
-        });
-    });     
+            });
+        });     
 
     
 
