@@ -1,0 +1,66 @@
+
+/* Milestone 2: Style the waiting screen background */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0b1d33;
+    color: white;
+    text-align: center;
+
+    /* Milestone 2: Center the waiting screen content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Milestone 2: Style the waiting screen title */
+h1 {
+    font-size: 36px;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+/* Milestone 2: Style the waiting message */
+p {
+    font-size: 18px;
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+/* Milestone 2: Create a loading animation */
+body::after {
+    content: "";
+    width: 45px;
+    height: 45px;
+    border: 5px solid #173451;
+    border-top: 5px solid #65c7ed;
+    border-radius: 50%;
+    animation: loading 1s linear infinite;
+}
+
+/* Milestone 2: Rotate the loading indicator */
+@keyframes loading {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Milestone 2: Adjust text sizes for smaller screens */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 28px;
+    }
+
+    p {
+        font-size: 16px;
+        padding: 0 20px;
+    }
+}
