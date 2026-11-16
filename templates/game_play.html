@@ -100,7 +100,13 @@
 
             </div>
         </div>
-    </div>        
+    </div>      
+    
+    <div id="turn-popup" class="popup">
+        Waiting For Opponent
+        <br></br>
+        Wait for you opponent to make a move.
+    </div>
 
     <script>
         function createShip(startCell, length, direction, shipType) {
@@ -120,8 +126,6 @@
             ship.dataset.length = length;
             ship.dataset.shipType = shipType;
             ship.dataset.startCell = startCell;
-
-            
 
             // Milestone 2: Set the ship size based on its length
             const shipLength = length * 50 - 8;

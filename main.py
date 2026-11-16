@@ -7,11 +7,6 @@ from flask import Flask, render_template, request, jsonify
 import random
 import string 
 
-# ---------------
-# to run: main.py 
-# use http://127.0.0.1:5001
-# ---------------
-
 # creating the flask app
 app = Flask(__name__)
 
@@ -264,6 +259,11 @@ def fire_shot():
         "target": target,
         "next_turn": game["turn"]
     })                
+    
+@app.route("/turn_status/<room_code>")   
+def turn_status(room_code):
+    if room_code not in games:
+        return jsonify({}) 
                  
 
 

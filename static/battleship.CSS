@@ -367,3 +367,25 @@ h1 {
 .board-section .board-container{
     margin-top: 0;
 }
+
+.popup {
+    display: none;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background: #1f2937;
+    color: white;
+
+    padding: 25px 40px;
+    border-radius: 10px;
+
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
