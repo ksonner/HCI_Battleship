@@ -161,11 +161,14 @@
             detail.classList.add("ship-detail");
             ship.appendChild(detail);
 
-            ship.style.transformOrigin = "center center";
-            if (direction === "vertical") {
-                ship.style.transform = "translate(-50%, -50%) rotate(90deg)";
+            if (direction === "horizontal") {
+                ship.style.left = "4px";
+                ship.style.top = "8px";
             } else {
-                ship.style.transform = "translate(-50%, -50%);"
+                ship.style.left = "calc(50% + 17px)";
+                ship.style.top = "4px";
+                ship.style.transformOrigin = "top left";
+                ship.style.transform = "rotate(90deg)";
             }
 
             ship.draggable = true;

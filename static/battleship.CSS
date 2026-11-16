@@ -110,9 +110,6 @@ h1 {
     position: absolute;
     cursor: grab;
     z-index: 100;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
     pointer-events: auto;
     filter: drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.6));
 }
