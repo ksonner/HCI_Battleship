@@ -335,6 +335,21 @@ h1 {
     background-color: #65c7ed;
 }
 
+#randomize-button {
+    margin-top: 25px;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: #1e90ff;
+    color: white;
+    cursor: pointer;
+}
+
+#randomize-button:hover {
+    background-color: #65c7ed;
+}
+
 .game-area {
     display: flex;
     justify-content: center;
