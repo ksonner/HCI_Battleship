@@ -267,6 +267,10 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    if(!data.success) {
+                        alert(data.message);
+                        return;
+                    }
                     if(data.hit) {
                         cell.style.backgroundColor = "red";
                     } else {

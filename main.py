@@ -86,7 +86,7 @@ def new_game():
         "host_shots": [],
         "guest_shots": [],
         
-        "turn": 1
+        "turn": "host"
     }
     return jsonify({"room_code": room_code, "role": "host"})
 
@@ -218,14 +218,26 @@ def fire_shot():
     player = data["player"]
     target = data["target"]
     
-    print(f"{player} fired at {target}")
+    game = games[room_code]
+    
+    if game["turn"] != player:
+        return jsonify({
+            "success": False,
+            "message": "Not your turn"
+        })
     
     hit = False
     
     if player == "host":
-        enemy_ships = games[room_code]["guest_ships"]
-    else: 
-        enemy_ships = games[room_code]["host_ships"]
+        enemy_ships = game["guest_ships"]
+        game["turn"] = "guest"
+    else:
+        enemy_ships = game["host_ships"]
+        game["turn"] = "host"
+        
+    target = target.replace(
+        "opponent-", ""
+    )        
         
     for ship in enemy_ships:
         start = ship["startCell"]
@@ -243,13 +255,14 @@ def fire_shot():
             else:
                 current = letters[col] + str(row + i)
                 
-            if current == target.replace("opponent-", ""):
+            if current == target:
                 hit = True
                 
     return jsonify({
         "success": True,
         "hit": hit,
-        "target": target
+        "target": target,
+        "next_turn": game["turn"]
     })                
                  
 
