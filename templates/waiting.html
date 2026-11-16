@@ -19,10 +19,18 @@
     to finish placing ships...
 </p>
 
+<div id="start-popup" class="popup">
+    Both Players Are Ready!
+    <br></br>
+    Game starts in 5 seconds...
+</div>
+
 <script>
 
     const room_code = 
     localStorage.getItem("roomCode");
+
+    let gameStarting = false;
 
     // check every second if the both players are ready
     setInterval(() => {
@@ -31,9 +39,12 @@
         )
         .then(response => response.json())
         .then(data => {
-            if (data.ready) {
-                alert("Both players are ready! Starting the game...");
-                window.location.href = "/game_play";
+            if (data.ready && !gameStarting) {
+                gameStarting = true;
+                document.getElementById("start-popup").style.display = "block";
+                setTimeout(() => {
+                    window.location.href = "/game_play";
+                }, 5000);
             }
         });
     }, 1000);
