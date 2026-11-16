@@ -263,7 +263,12 @@ def fire_shot():
 @app.route("/turn_status/<room_code>")   
 def turn_status(room_code):
     if room_code not in games:
-        return jsonify({}) 
+        return jsonify({"success": False})
+    
+    return jsonify({
+        "success": True,
+        "turn": games[room_code]["turn"]
+    }) 
                  
 
 

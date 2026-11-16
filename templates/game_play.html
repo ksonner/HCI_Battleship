@@ -109,6 +109,7 @@
     </div>
 
     <script>
+        let myTurn = false;
         function createShip(startCell, length, direction, shipType) {
 
             // Milestone 2: Find the starting cell
@@ -257,6 +258,10 @@
         .forEach(cell => {
             cell.addEventListener('click', () => {
 
+                if(!myTurn){
+                    return;
+                }
+                
                 if(cell.classList.contains("shot")){
                     return;
                 }
@@ -287,6 +292,28 @@
                 });
             });
         });
+
+        setInterval(() => {
+
+            fetch(`/turn_status/${roomCode}`)
+            .then(response => response.json())
+            .then(data => {
+        
+                const popup =
+                    document.getElementById("turn-popup");
+        
+                if (data.turn !== playerRole) {
+                    myTurn = false;
+                    popup.style.display = "block";
+                }
+                else {
+                    myTurn = true;
+                    popup.style.display = "none";
+                }
+        
+            });
+        
+        }, 1000);
         
         </script>
 
