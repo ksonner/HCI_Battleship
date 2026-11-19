@@ -223,6 +223,11 @@ def fire_shot():
     
     target = target.replace("opponent-", "")
     
+    if player == "host":
+        game["host_shots"].append(target)
+    else:
+        game["guest_shots"].append(target)
+    
     hit = False
     
     if player == "host":
@@ -264,7 +269,7 @@ def fire_shot():
         "hit": hit,
         "target": target,
         "next_turn": game["turn"]
-    })                
+    })                    
     
 @app.route("/turn_status/<room_code>")   
 def turn_status(room_code):
@@ -275,6 +280,23 @@ def turn_status(room_code):
         "success": True,
         "turn": games[room_code]["turn"]
     }) 
+    
+# retrieve opponents shots 
+@app.route("/get_shots/<room_code>/<player>")
+def get_shots(room_code, player):
+    if room_code not in games:
+        return jsonify({"success": False})
+    game = games[room_code]
+    
+    if player == "host":
+        shots_against_me = game["guest_shots"]
+    else:
+        shots_against_me = game["host_shots"]
+        
+    return jsonify({
+        "success": True,
+        "shots": shots_against_me
+    })    
                  
 
 

@@ -261,7 +261,7 @@
                 if(!myTurn){
                     return;
                 }
-                
+
                 if(cell.classList.contains("shot")){
                     return;
                 }
@@ -310,10 +310,38 @@
                     myTurn = true;
                     popup.style.display = "none";
                 }
-        
+            
             });
         
         }, 1000);
+
+        // check for uncoming shots 
+        setInterval(() => {
+            updateIncomingShots();
+        }, 1000);
+
+
+        function updateIncomingShots(){
+            fetch(`/get_shots/${roomCode}/${playerRole}`)
+            .then(response => response.json())
+            .then(data => {
+                if(!data.success){
+                    return;
+                }
+                data.shots.forEach(shot => {
+                    const cell= document.getElementById(shot);
+
+                    if(!cell){
+                        return;
+                    }
+                    if(cell.classList.contains("incoming-shot")){
+                        return;
+                    }
+                    cell.classList.add("incoming-shot");
+                    cell.style.backgroundColor = "red";
+                });
+            });
+        }
         
         </script>
 
