@@ -221,19 +221,15 @@ def fire_shot():
             "message": "Not your turn"
         })
     
+    target = target.replace("opponent-", "")
+    
     hit = False
     
     if player == "host":
         enemy_ships = game["guest_ships"]
-        game["turn"] = "guest"
     else:
         enemy_ships = game["host_ships"]
-        game["turn"] = "host"
-        
-    target = target.replace(
-        "opponent-", ""
-    )        
-        
+         
     for ship in enemy_ships:
         start = ship["startCell"]
         length = int(ship["length"])
@@ -252,6 +248,16 @@ def fire_shot():
                 
             if current == target:
                 hit = True
+                break
+        if hit: 
+            break
+        
+        # only switch turns on a miss 
+    if not hit:
+        if player == "host":
+            game["turn"] = "guest"
+        else:
+            game["turn"] = "host"
                 
     return jsonify({
         "success": True,
