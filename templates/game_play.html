@@ -322,6 +322,11 @@
                 const popup =
                     document.getElementById("turn-popup");
         
+                if(gameEnded){
+                    popup.style.display = "none";
+                    return;
+                }
+                    
                 if (data.turn !== playerRole) {
                     myTurn = false;
                     popup.style.display = "block";
