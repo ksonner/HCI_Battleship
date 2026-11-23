@@ -81,6 +81,10 @@ def new_game():
         "host_shots": [],
         "guest_shots": [],
         
+        # game state
+        "winner": None,
+        "game_over": False,
+        
         "turn": "host"
     }
     return jsonify({"room_code": room_code, "role": "host"})
@@ -203,6 +207,27 @@ def ready_status(room_code):
         "guest_ready": game["guest_ready"]
     })
     
+def all_ships_sunk(ships, shots):
+    letters = "ABCDEFGHIJ"
+    
+    for ship in ships:
+        start = ship["startCell"]
+        length = int(ship['length']) 
+        direction = ship["direction"]
+        
+        col = letters.index(start[0])       
+        row = int(start[1:])
+        
+        for i in range(length):
+            if direction == "horizontal":
+                cell = letters[col + i] + str(row)
+            else:
+                cell = letters[col] + str(row + i)
+            if cell not in shots:
+                return False    
+    return True        
+           
+    
 # fire shot route    
 @app.route("/fire_shot", methods=["POST"])
 def fire_shot():
@@ -263,12 +288,34 @@ def fire_shot():
             game["turn"] = "guest"
         else:
             game["turn"] = "host"
+     
+    # check if victory after a successfull hit        
+    if player == "host":
+        
+        # host shoots guest ships
+        if all_ships_sunk(
+            game["guest_ships"],
+            game["host_shots"]
+        ):
+            game["game_over"] = True
+            game["winner"] = "host"
+    else:
+        
+        # guest shoots host ships 
+        if all_ships_sunk(
+            game["host_ships"],
+            game["guest_shots"]
+        ):
+            game["game_over"] = True
+            game["winner"] = "guest"                
                 
     return jsonify({
         "success": True,
         "hit": hit,
         "target": target,
-        "next_turn": game["turn"]
+        "next_turn": game["turn"],
+        "game_over": game["game_over"],
+        "winner": game["winner"]
     })                    
     
 @app.route("/turn_status/<room_code>")   
@@ -280,6 +327,20 @@ def turn_status(room_code):
         "success": True,
         "turn": games[room_code]["turn"]
     }) 
+    
+@app.route("/winner_status/<room_code>")
+def winner_status(room_code):
+    if room_code not in games:
+        return jsonify({
+            "success": False
+        })    
+    game = games[room_code] 
+    
+    return jsonify({
+        "success": True,
+        "game_over": game["game_over"],
+        "winner": game["winner"]
+    })   
     
 # retrieve opponents shots 
 @app.route("/get_shots/<room_code>/<player>")
@@ -297,6 +358,7 @@ def get_shots(room_code, player):
         "success": True,
         "shots": shots_against_me
     })    
+        
                  
 
 

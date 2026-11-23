@@ -107,9 +107,14 @@
         <br></br>
         Wait for your opponent to make a move.
     </div>
+    <div id="game-over-popup" class="popup" style="display:none;">
+        <div id="game-over-message"></div>
+    </div>    
 
     <script>
         let myTurn = false;
+        let gameEnded = false;
+
         function createShip(startCell, length, direction, shipType) {
 
             // Milestone 2: Find the starting cell
@@ -262,6 +267,10 @@
                     return;
                 }
 
+                if(gameEnded){
+                    return;
+                }
+
                 if(cell.classList.contains("shot")){
                     return;
                 }
@@ -289,6 +298,17 @@
                         cell.style.backgroundColor = "white";
                     }
                     cell.classList.add("shot");
+
+                    if(data.game_over){
+                        gameEnded = true;
+                        const popup =
+                        document.getElementById("game-over-popup");
+                        const message = 
+                        document.getElementById("game-over-message");
+
+                        message.textContent = "YOU WIN!";
+                        popup.style.display = "block";
+                    }
                 });
             });
         });
@@ -320,6 +340,9 @@
             updateIncomingShots();
         }, 1000);
 
+        setInterval(() => {
+            checkForWinner();
+        }, 1000);
 
         function updateIncomingShots(){
             fetch(`/get_shots/${roomCode}/${playerRole}`)
@@ -343,6 +366,29 @@
             });
         }
         
+        function checkForWinner(){
+            if(gameEnded){
+                return;
+            }
+            fetch(`/winner_status/${roomCode}`)
+            .then(response => response.json())
+            .then(data => {
+                if(!data.game_over) {
+                    return;
+                }
+                if(data.winner !== playerRole) {
+                    gameEnded = true;
+
+                    const popup =
+                    document.getElementById("game-over-popup");
+                    const message =
+                    document.getElementById("game-over-message");
+
+                    message.textContent = "YOU LOSE!";
+                    popup.style.display = "block";
+                }
+            });
+        }
         </script>
 
 </body>
