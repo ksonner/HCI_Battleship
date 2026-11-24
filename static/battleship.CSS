@@ -72,6 +72,10 @@ h1 {
     cursor: pointer;
 }
 
+.cell.drag {
+    cursor: grab;
+}
+
 /* NEW: Highlight a square when it receives keyboard focus */
 .cell:focus-visible {
     outline: 3px solid #ffcc00;
@@ -110,7 +114,7 @@ h1 {
     position: absolute;
     cursor: grab;
     z-index: 100;
-    pointer-events: auto;
+    pointer-events: none;
     filter: drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.6));
 }
 
