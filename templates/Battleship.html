@@ -611,6 +611,10 @@
         });
  
         document.getElementById("randomize-button").addEventListener("click", function() {
+            for (const i of occupiedCells) {
+                document.getElementById(i).draggable = false;
+                document.getElementById(i).classList.remove("drag");
+            };
             if (selectedShip !== null) {
                 replaceShip("A1", true);
                 //selectedShip.classList.remove("selected");
