@@ -349,6 +349,7 @@
                         break;
                     };
                 };
+                return true;
             } else {
                 occupiedCells = oldOccupied;
                 shipStartCells = oldStartCells;
@@ -363,6 +364,7 @@
                         break;
                     };
                 };
+                return false;
             };
         };
  
@@ -427,6 +429,11 @@
                         };
                     };
                     dragOffset = i - shipStartCells.indexOf(startCell);
+                    if (selectedShip !== null) {
+                        selectedShip.classList.remove("selected");
+                    }
+                    selectedShip = dship;
+                    selectedShip.classList.add("selected");
                     draggedShip = dship;
                 };
             });
@@ -534,10 +541,20 @@
                         cellId = grid[i - (10 * dragOffset)];
                     };
                 };
+
+                success = false;
+
+                if (cellId !== undefined) {
+                    success = replaceShip(cellId);
+                };
+
+                if (!success) {
+                    cellId = draggedShip.dataset.startCell;
+                };
                 
-                replaceShip(cellId);
                 clearHighlights();
                 draggedShip = null;
+                selectedShip.classList.remove("selected");
                 selectedShip = null;
                 for (const ship in ships) {
                     if (ships[ship].dataset.startCell === cellId) {
