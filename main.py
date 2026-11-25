@@ -281,13 +281,11 @@ def fire_shot():
                 break
         if hit: 
             break
-        
-        # only switch turns on a miss 
-    if not hit:
-        if player == "host":
-            game["turn"] = "guest"
-        else:
-            game["turn"] = "host"
+    
+    if player == "host":
+        game["turn"] = "guest"
+    else:
+        game["turn"] = "host"
      
     # check if victory after a successfull hit        
     if player == "host":

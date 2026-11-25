@@ -115,6 +115,8 @@
         let myTurn = false;
         let gameEnded = false;
 
+        occupiedCells = localStorage.getItem("occupiedCells");
+
         function createShip(startCell, length, direction, shipType) {
 
             // Milestone 2: Find the starting cell
@@ -366,7 +368,11 @@
                         return;
                     }
                     cell.classList.add("incoming-shot");
-                    cell.style.backgroundColor = "red";
+                    if (occupiedCells.includes(cell.id)) {
+                        cell.style.backgroundColor = "red";
+                    } else {
+                        cell.style.backgroundColor = "white";
+                    };
                 });
             });
         }

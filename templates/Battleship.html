@@ -758,6 +758,7 @@
                 selectedShip = null;
             };
             gameStart = true;
+            localStorage.setItem("occupiedCells", occupiedCells);
             fetch("/save_ships",{
                 method: "POST",
                 headers:{
