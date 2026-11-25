@@ -119,7 +119,18 @@ h1 {
     cursor: grab;
     z-index: 100;
     pointer-events: auto;
+}
+
+.ship-inner {
+    position: absolute;
+}
+
+.ship-inner.horizontal {
     filter: drop-shadow(2px 4px 3px rgba(0, 0, 0, 0.6));
+}
+
+.ship-inner.vertical {
+    filter: drop-shadow(4px -2px 3px rgba(0, 0, 0, 0.6));
 }
 
 .cell.drag:active{
@@ -338,7 +349,8 @@ h1 {
 
 .selected{
     outline: 4px solid yellow;
-    outline-offset: 3px;
+    outline-offset: -3px;
+    filter: none;
 }
 
 .button-container {
