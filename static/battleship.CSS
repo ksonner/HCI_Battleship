@@ -402,6 +402,18 @@ h1 {
     margin-top: 0;
 }
 
+.board.yours {
+    pointer-events: none;
+}
+
+.row-label {
+    pointer-events: auto;
+}
+
+.ship.yours {
+    pointer-events: none;
+}
+
 .popup {
     display: none;
 
@@ -423,6 +435,14 @@ h1 {
 
     z-index: 9999;
     box-shadow: 0 0 0 9999px rgba(0,0,0,0.6);
+}
+
+.background {
+    pointer-events: none;
+}
+
+.background .row-label{
+    pointer-events: none;
 }
 
 
