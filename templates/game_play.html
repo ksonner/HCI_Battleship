@@ -110,7 +110,12 @@
     </div>
     <div id="game-over-popup" class="popup" style="display:none;">
         <div id="game-over-message"></div>
+        <br>
+        <button id="play-again-btn">
+            Play again
+        </button>
     </div>    
+          
 
     <script>
         let myTurn = false;
@@ -307,7 +312,7 @@
                     if(data.hit) {
                         cell.style.backgroundColor = "red";
                     } else {
-                        cell.style.backgroundColor = "white";
+                        cell.style.backgroundColor = "lightgray";
                     }
                     cell.classList.add("shot");
 
