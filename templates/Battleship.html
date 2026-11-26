@@ -411,7 +411,6 @@
         for (const element of cellList) {
             element.addEventListener("click", function(event) {
                 if (!gameStart) {
-                    clearFakeShip();
                     cell = element.id;
                     index = occupiedCells.indexOf(cell);
                     if (index !== -1) {
@@ -490,16 +489,7 @@
                 };
             });
 
-            element.addEventListener("mousedown", function(event) {
-                clearFakeShip();
-            });
-
-            element.addEventListener("mouseup", function(event) {
-                clearFakeShip();
-            });
-
             element.addEventListener("dragstart", function(event) {
-                clearFakeShip();
                 var cellId;
                 elementList = document.elementsFromPoint(event.clientX, event.clientY);
                 for (const element of elementList) {
@@ -525,32 +515,9 @@
                     };
                     selectedShip = dship;
                     selectedShip.classList.add("selected");
-                    /*if (dragOffset !== 0) {
-                        selectedShip.hidden = true;
-                        createShip(
-                            cellId,
-                            dship.dataset.length,
-                            dship.dataset.direction,
-                            dship.dataset.shipType,
-                            dragOffset,
-                            true
-                        );
-                    };*/
                     draggedShip = dship;
                 };
             });
-        };
-
-        function clearFakeShip() {
-            if (fakeShip !== null) {
-                if (fakeShip.parentNode) {
-                    fakeShip.parentNode.removeChild(fakeShip);
-                };
-                fakeShip = null;
-                for (const ship of ships) {
-                    ship.hidden = false;
-                };
-            };
         };
 
         // using r or arrow keys to rotate ships
@@ -677,8 +644,6 @@
                     return;
                 };
 
-                clearFakeShip();
-
                 for (i = 0; i < shipStartCells.length; i++) {
                     if (shipStartCells[i] === draggedShip.dataset.startCell) {
                             document.getElementById(occupiedCells[i]).classList.remove("hover");
@@ -747,7 +712,6 @@
         document
         .getElementById("ready-button")
         .addEventListener("click", function() {
-            clearFakeShip();
             randButton = document.getElementById("randomize-button");
             if (randButton.parentNode) {
                 randButton.parentNode.removeChild(randButton);
@@ -794,15 +758,8 @@
         });
 
         document.getElementById("randomize-button").addEventListener("click", function() {
-            clearFakeShip();
-            //for (const i of occupiedCells) {
-            //    document.getElementById(i).draggable = false;
-            //    document.getElementById(i).classList.remove("drag");
-            //};
             if (selectedShip !== null) {
                 replaceShip("A1", true);
-                //selectedShip.classList.remove("selected");
-                //selectedShip = null;
             } else {
                 randomizeShips();
             };

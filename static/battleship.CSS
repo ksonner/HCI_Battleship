@@ -76,8 +76,8 @@ h1 {
     background-color: #65c7ed;
 }
 
-.cell.drag {
-    cursor: grab;
+.ship:active {
+    cursor: grabbing;
 }
 
 /* NEW: Highlight a square when it receives keyboard focus */
@@ -131,10 +131,6 @@ h1 {
 
 .ship-inner.vertical {
     filter: drop-shadow(4px -2px 3px rgba(0, 0, 0, 0.6));
-}
-
-.cell.drag:active{
-    cursor: grabbing;
 }
 
 /* Milestone 2: Create a pointed metallic hull */

@@ -115,7 +115,7 @@
         let myTurn = false;
         let gameEnded = false;
 
-        occupiedCells = localStorage.getItem("occupiedCells");
+        occupiedCells = localStorage.getItem("occupiedCells").split(",");
 
         function createShip(startCell, length, direction, shipType) {
 
@@ -303,6 +303,11 @@
 
                     if(data.game_over){
                         gameEnded = true;
+
+                        clearInterval(turnCheck);
+                        clearInterval(shotCheck);
+                        clearInterval(winCheck);
+
                         const popup =
                         document.getElementById("game-over-popup");
                         const message = 
@@ -315,7 +320,7 @@
             });
         });
 
-        setInterval(() => {
+        turnCheck = setInterval(() => {
 
             fetch(`/turn_status/${roomCode}`)
             .then(response => response.json())
@@ -343,11 +348,11 @@
         }, 1000);
 
         // check for uncoming shots 
-        setInterval(() => {
+        shotCheck = setInterval(() => {
             updateIncomingShots();
         }, 1000);
 
-        setInterval(() => {
+        winCheck = setInterval(() => {
             checkForWinner();
         }, 1000);
 
@@ -389,6 +394,10 @@
                 }
                 if(data.winner !== playerRole) {
                     gameEnded = true;
+
+                    clearInterval(turnCheck);
+                    clearInterval(shotCheck);
+                    clearInterval(winCheck);
 
                     const popup =
                     document.getElementById("game-over-popup");
