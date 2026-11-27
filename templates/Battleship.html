@@ -8,6 +8,8 @@
 
     <link rel="stylesheet"
       href="{{ url_for('static', filename='battleship.css') }}">
+      
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
 </head>
 
@@ -351,11 +353,6 @@
 
             cellIndex = occupiedCells.indexOf(oldCell);
 
-            //for (const i of occupiedCells) {
-            //    document.getElementById(i).draggable = false;
-            //    document.getElementById(i).classList.remove("drag");
-            //};
-
             occupiedCells.splice(cellIndex, shipLength);
             shipStartCells.splice(cellIndex, shipLength);
 
@@ -369,9 +366,9 @@
             if (random) {
                 newShip = initShip(shipLength, true);
                 createShip(createShip(newShip[0], shipLength, newShip[1], shipType));
-                for (const ship in ships) {
-                    if (ships[ship].dataset.startCell === newShip[0]) {
-                        selectedShip = ships[ship];
+                for (const ship of ships) {
+                    if (ship.dataset.startCell === newShip[0]) {
+                        selectedShip = ship;
                         selectedShip.classList.add("selected");
                         break;
                     };
@@ -382,9 +379,9 @@
             newShip = initShip(shipLength, false, newX, newY, shipRot);
             if (newShip !== false) {
                 createShip(newShip[0], shipLength, newShip[1], shipType);
-                for (const ship in ships) {
-                    if (ships[ship].dataset.startCell === cell) {
-                        selectedShip = ships[ship];
+                for (const ship of ships) {
+                    if (ship.dataset.startCell === cell) {
+                        selectedShip = ship;
                         break;
                     };
                 };
@@ -392,14 +389,10 @@
             } else {
                 occupiedCells = oldOccupied;
                 shipStartCells = oldStartCells;
-                //for (const i of occupiedCells) {
-                //    document.getElementById(i).draggable = true;
-                //    document.getElementById(i).classList.add("drag");
-                //};
                 createShip(oldCell, shipLength, selectedShip.dataset.direction, shipType);
-                for (const ship in ships) {
-                    if (ships[ship].dataset.startCell === oldCell) {
-                        selectedShip = ships[ship];
+                for (const ship of ships) {
+                    if (ship.dataset.startCell === oldCell) {
+                        selectedShip = ship;
                         break;
                     };
                 };
@@ -429,9 +422,9 @@
                                 selectedShip = null;
                             };
 
-                            for (const ship in ships) {
-                                if (ships[ship].dataset.startCell === startCell) {
-                                    selectedShip = ships[ship];
+                            for (const ship of ships) {
+                                if (ship.dataset.startCell === startCell) {
+                                    selectedShip = ship;
                                     break;
                                 };
                             };
@@ -452,9 +445,9 @@
                 if (index !== -1) {
                     startCell = shipStartCells[index];
                     var hoverShip;
-                    for (const ship in ships) {
-                        if (ships[ship].dataset.startCell === startCell) {
-                            hoverShip = ships[ship];
+                    for (const ship of ships) {
+                        if (ship.dataset.startCell === startCell) {
+                            hoverShip = ship;
                             break;
                         };
                     };
@@ -473,9 +466,9 @@
                 if (index !== -1) {
                     startCell = shipStartCells[index];
                     var hoverShip;
-                    for (const ship in ships) {
-                        if (ships[ship].dataset.startCell === startCell) {
-                            hoverShip = ships[ship];
+                    for (const ship of ships) {
+                        if (ship.dataset.startCell === startCell) {
+                            hoverShip = ship;
                             break;
                         };
                     };
@@ -502,9 +495,9 @@
                 if (i !== -1) {
                     startCell = shipStartCells[i];
                     var dship;
-                    for (const ship in ships) {
-                        if (ships[ship].dataset.startCell === startCell) {
-                            dship = ships[ship];
+                    for (const ship of ships) {
+                        if (ship.dataset.startCell === startCell) {
+                            dship = ship;
                             break;
                         };
                     };
@@ -516,6 +509,27 @@
                     selectedShip = dship;
                     selectedShip.classList.add("selected");
                     draggedShip = dship;
+                    for(const ship of ships) {
+                        ship.style.pointerEvents = "none";
+                    };
+                };
+            });
+
+            element.addEventListener("mousedown", function(event) {
+                if (draggedShip !== null) {
+                    draggedShip = null;
+                    for(const ship of ships) {
+                        ship.style.pointerEvents = "auto";
+                    };
+                };
+            });
+
+            element.addEventListener("mouseup", function(event) {
+                if (draggedShip !== null) {
+                    draggedShip = null;
+                    for(const ship of ships) {
+                        ship.style.pointerEvents = "auto";
+                    };
                 };
             });
         };
@@ -566,9 +580,9 @@
                     selectedShip = null;
                 };
 
-                for (const ship in ships) {
-                    if (ships[ship].dataset.startCell === draggedShip.dataset.startCell) {
-                        selectedShip = ships[ship];
+                for (const ship of ships) {
+                    if (ship.dataset.startCell === draggedShip.dataset.startCell) {
+                        selectedShip = ship;
                         selectedShip.classList.add("selected");
                         break;
                     };
@@ -577,17 +591,8 @@
                 var cellId;
 
                 //clearHighlights();
-                if (draggedShip.dataset.startCell === cell.id || occupiedCells.includes(cell.id)) {
-                    elementList = document.elementsFromPoint(event.clientX, event.clientY);
-                    for (const element of elementList) {
-                        if (element.classList[0] === "cell") {
-                            cellId = element.id;
-                            break;
-                        };
-                    };
-                } else {
-                    cellId = cell.id;
-                };
+
+                cellId = cell.id;
 
                 if (dragOffset != 0) {
                     i = grid.indexOf(cellId);
@@ -607,17 +612,6 @@
 
                 if (cells === null) {
                     return;
-                };
-
-                for (const cell of document.getElementsByClassName("invalid-drop")) {
-                    if (!cells.includes(cell.id)) {
-                        cell.classList.remove("invalid-drop");
-                    };
-                };
-                for (const cell of document.getElementsByClassName("valid-drop")) {
-                    if (!cells.includes(cell.id)) {
-                        cell.classList.remove("valid-drop");
-                    };
                 };
 
                 cells.forEach(id => {
@@ -650,17 +644,7 @@
                     };
                 };
 
-                if (draggedShip.dataset.startCell === cell.id) {
-                    elementList = document.elementsFromPoint(event.clientX, event.clientY);
-                    for (const element of elementList) {
-                        if (element.classList[0] === "cell") {
-                            cellId = element.id;
-                            break;
-                        };
-                    };
-                } else {
-                    cellId = cell.id;
-                };
+                cellId = cell.id;
 
                 if (dragOffset != 0) {
                     i = grid.indexOf(cellId);
@@ -685,9 +669,10 @@
                 draggedShip = null;
                 selectedShip.classList.remove("selected");
                 selectedShip = null;
-                for (const ship in ships) {
-                    if (ships[ship].dataset.startCell === cellId) {
-                        selectedShip = ships[ship];
+                for (const ship of ships) {
+                    ship.style.pointerEvents = "auto";
+                    if (ship.dataset.startCell === cellId) {
+                        selectedShip = ship;
                         selectedShip.classList.add("selected");
                         break;
                     };
