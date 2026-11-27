@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship</title>
 
-    <link rel="stylesheet"
-      href="{{ url_for('static', filename='battleship.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='battleship.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='game_play.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
       
 </head>
@@ -139,7 +139,7 @@
             const ship = document.createElement("div");
             const inner = document.createElement("div");
             ship.id = shipType;
-            ship.classList.add("ship", direction, shipType, "yours");
+            ship.classList.add("ship", direction, shipType);
             inner.classList.add("ship-inner", direction);
 
             ship.dataset.direction = direction;
