@@ -201,47 +201,6 @@
             ship.appendChild(inner);
             cell.appendChild(ship);
         };
-
-        /*function drawShips(shipList) {
-        
-            shipList.forEach(ship => {
-        
-                const startCell =
-                    document.getElementById(ship.startCell);
-        
-                if (!startCell) {
-                    return;
-                }
-        
-                const shipDiv =
-                    document.createElement("div");
-        
-                shipDiv.classList.add("ship");
-        
-                shipDiv.style.position = "absolute";
-                shipDiv.style.backgroundColor = "gray";
-                shipDiv.style.border = "2px solid black";
-                shipDiv.style.zIndex = "10";
-        
-                if (ship.direction === "vertical") {
-        
-                    shipDiv.style.width = "40px";
-                    shipDiv.style.height =
-                        (50 * parseInt(ship.length)) + "px";
-        
-                } else {
-        
-                    shipDiv.style.width =
-                        (50 * parseInt(ship.length)) + "px";
-        
-                    shipDiv.style.height = "40px";
-                }
-        
-                startCell.appendChild(shipDiv);
-        
-            });
-        
-        }*/
         
         const roomCode =
             localStorage.getItem("roomCode");

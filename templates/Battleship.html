@@ -8,7 +8,7 @@
 
     <link rel="stylesheet"
       href="{{ url_for('static', filename='battleship.css') }}">
-      
+
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
 </head>
@@ -202,7 +202,6 @@
 
             ship.draggable = true;
             ship.addEventListener("dragstart", function(event) {
-                //console.log(document.elementsFromPoint(event.clientX, event.clientY));
                 draggedShip = ship;
             });
 
@@ -279,11 +278,6 @@
                     } else {
                         occupiedCells = occupiedCells.concat(cells);
                         shipStartCells = shipStartCells.concat(startCells);
-
-                        //for (const i of occupiedCells) {
-                        //    document.getElementById(i).draggable = true;
-                        //    document.getElementById(i).classList.add("drag");
-                        //};
                         return [position, rotation];
                     };
                 };
@@ -512,6 +506,7 @@
                     for(const ship of ships) {
                         ship.style.pointerEvents = "none";
                     };
+                    event.dataTransfer.effectAllowed = "moveNone";
                 };
             });
 
@@ -520,6 +515,7 @@
                     draggedShip = null;
                     for(const ship of ships) {
                         ship.style.pointerEvents = "auto";
+                        ship.style.cursor = "inherit";
                     };
                 };
             });
@@ -590,8 +586,6 @@
 
                 var cellId;
 
-                //clearHighlights();
-
                 cellId = cell.id;
 
                 if (dragOffset != 0) {
@@ -611,12 +605,16 @@
                 );
 
                 if (cells === null) {
+                    event.dataTransfer.dropEffect = "none";
                     return;
                 };
+
+                invalid = false;
 
                 cells.forEach(id => {
                     curCell = document.getElementById(id);
                     if (occupiedCells.includes(curCell.id) && (shipStartCells[occupiedCells.indexOf(curCell.id)] !== draggedShip.dataset.startCell)) {
+                        invalid = true;
                         if (!(curCell.classList.contains("invalid-drop"))) {
                             curCell.classList.add("invalid-drop");
                         };
@@ -624,17 +622,35 @@
                         curCell.classList.add("valid-drop");
                     };
                 });
-
+                if (invalid) {
+                    event.dataTransfer.dropEffect = "none";
+                } else {
+                    event.dataTransfer.dropEffect = "move";
+                }
             });
 
             cell.addEventListener("dragleave", function(event) {
                 clearHighlights();
             });
 
+            cell.addEventListener("dragend", function(event) {
+                event.preventDefault();
+                dragOffset = 0;
+                dropShip(cell);
+                /*if (draggedShip !== null) {
+                    draggedShip = null;
+                    for(const ship of ships) {
+                        ship.style.pointerEvents = "auto";
+                    };
+                };*/
+            });
+
             cell.addEventListener("drop", function(event) {
                 event.preventDefault();
 
-                if(!draggedShip) {
+                dropShip(cell);
+
+                /*if(!draggedShip) {
                     return;
                 };
 
@@ -676,9 +692,55 @@
                         selectedShip.classList.add("selected");
                         break;
                     };
-                };
+                };*/
             });
         });
+
+        function dropShip(cell) {
+            if(!draggedShip) {
+                return;
+            };
+
+            for (i = 0; i < shipStartCells.length; i++) {
+                if (shipStartCells[i] === draggedShip.dataset.startCell) {
+                        document.getElementById(occupiedCells[i]).classList.remove("hover");
+                };
+            };
+
+            cellId = cell.id;
+
+            if (dragOffset != 0) {
+                i = grid.indexOf(cellId);
+                if (selectedShip.dataset.direction === "horizontal") {
+                    cellId = grid[i - dragOffset];
+                } else {
+                    cellId = grid[i - (10 * dragOffset)];
+                };
+            };
+
+            success = false;
+
+            if (cellId !== undefined) {
+                success = replaceShip(cellId);
+            };
+
+            if (!success) {
+                cellId = draggedShip.dataset.startCell;
+            };
+
+            clearHighlights();
+            draggedShip = null;
+            selectedShip.classList.remove("selected");
+            selectedShip = null;
+            for (const ship of ships) {
+                ship.style.pointerEvents = "auto";
+                if (ship.dataset.startCell === cellId) {
+                    selectedShip = ship;
+                    selectedShip.classList.add("selected");
+                    break;
+                };
+            };
+        };
 
         // saves ship location after submission
         function collectShips() {
